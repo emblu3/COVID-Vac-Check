@@ -65,12 +65,12 @@ while True:
         check2 = scrapeSite() # extract table data again to a diff variable
 
         # if vaccination table has not changed
-        if len(check1) != len(check2):
+        if len(check1) == len(check2):
             # continue with the script,
             continue
 
         # if vaccination table has changed,
-        elif len(check1) == len(check2):
+        elif len(check1) != len(check2):
             # Try to send email about update
             try:
                 # create an email message with just a subject line,
