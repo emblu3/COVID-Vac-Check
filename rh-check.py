@@ -61,7 +61,7 @@ while True:
     #try to scrape webpage
     try: 
         check1 = scrapeSite() # extract table data
-        time.sleep(10) # wait 20mins
+        time.sleep(1200) # wait 20mins
         check2 = scrapeSite() # extract table data again to a diff variable
 
         # if vaccination table has not changed
