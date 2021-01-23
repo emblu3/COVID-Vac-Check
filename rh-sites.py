@@ -1,41 +1,42 @@
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup 
-import webbrowser, zlib
+import webbrowser, zlib, time
 
+# Web scraping function
 def scrapeSite():
-    # Web scraping function
-    my_url = 'https://www.rivcoph.org/COVID-19-Vaccine' #web URL
-    uClient = uReq(my_url) #open URL
-    page_html = zlib.decompress(uClient.read(), 16+zlib.MAX_WBITS)
-    uClient.close() #close URL
-    page_soup = soup(page_html, 'html.parser') #parse URL data
+    my_url = 'https://www.rivcoph.org/COVID-19-Vaccine' # web URL
+    uClient = uReq(my_url) # open URL
+    page_html = zlib.decompress(uClient.read(), 16+zlib.MAX_WBITS) # decompress gzip
+    uClient.close() # close URL
+    page_soup = soup(page_html, 'html.parser') # parse URL data
 
-    tables = page_soup.find(id='dnn_ctr2947_HtmlModule_lblContent')
+    tables = page_soup.find(id='dnn_ctr2947_HtmlModule_lblContent') # find table with vaccination links
 
-    links = []
-    for link in tables.find_all('a'):
-        links.append(link.get('href'))
+    links = [] # empty list for urls
+    for link in tables.find_all('a'): # find anchors
+        links.append(link.get('href')) # append urls to list
 
-    b = webbrowser.get('chrome')
-    for url in links:
-        if 'Full.png' in url:
-            pass
+    b = webbrowser.get('chrome') # chrome is selected browser
+    for url in links: # iterate through list of urls
+        if 'Full.png' in url: # if href contains "full" image directory
+            pass # skip
         else:
-            b.open(url)
-            print(url)
-    print('\n\nDONE!\n')
+            b.open(url) # open the url in chrome
+            print(url) # print the url
+    print('\n\nDONE!\n') #complete message
 
-def forever():
+# Run script to completion
+def main():
     while True:
-        try:
+        try: # try running the script
             scrapeSite()
+            break # break once scrapeSite() function completely executes
+        except: # Any error
+            time.sleep(1) # wait 1 second
+            pass # skip / try again
+        else: 
             break
-        except:
-            pass
-        else:
-            break
-
-forever()
 
 
-
+# Run script
+main()
